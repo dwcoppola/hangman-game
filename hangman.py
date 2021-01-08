@@ -1,7 +1,5 @@
 from random import random
 import os
-capital_letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", 
-                    "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
 def populate_mystery_word(word):
     display_word = " "
     for v in word:
@@ -20,7 +18,7 @@ def get_game_word():
         new_word_list.append(i)
     while True:
         game_word = new_word_list[int(random() * len(new_word_list))]
-        if game_word[0] not in capital_letters and not len(game_word) < 5 and not len(game_word) > 12:
+        if game_word.lower() == game_word and not len(game_word) < 5 and not len(game_word) > 12:
             break
         else:
             continue
