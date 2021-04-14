@@ -1,5 +1,6 @@
 from random import random
 import os
+
 def populate_mystery_word(word):
     display_word = " "
     for v in word:
@@ -11,6 +12,7 @@ def populate_mystery_word(word):
 word_list = open("5desk.txt", "r")
 lines = word_list.readlines()
 word_list.close()
+
 def get_game_word():
     new_word_list = []
     for v in lines:
@@ -23,6 +25,7 @@ def get_game_word():
         else:
             continue
     return game_word
+
 while True:
     os.system("cls")
     print("Choose:")
@@ -50,8 +53,15 @@ while True:
                 input()
                 break
             print()
-            guess = input("What's your guess? (Enter 'save' at any time to save your game)")
+            guess = input("What's your guess? (Enter 'save' at any time to save your game)").lower()
+            if guess == game_word:
+                print("You win! Press 'Enter' to go back to the main menu.")
+                input()
+                break                
             if guess == "":
+                continue
+            if (len(guess) > 1 and guess != "save") or guess.isalpha() == False:
+                input("You can only guess letters and only 1 at a time. Press Enter.")
                 continue
             if guess.lower() == "save":
                 while True:
@@ -92,30 +102,32 @@ while True:
                 incorrect_guesses.append(guess)           
                 all_guesses.append(guess)
                 incorrects_remaining -= 1       
-                print(f"game over - the word was {game_word}. Press 'Enter' to go back to the main menu.")
+                print(f"game over - the word was '{game_word.upper()}'. Press 'Enter' to go back to the main menu.")
                 input()
                 break
     elif answer == "2":
         if not os.path.exists("./save_files/"):
             input("You don't have any saved games to load. Press Enter to go back to the menu. ")
-        print("Pick a file:")
-        c = 0
-        for v in os.listdir("./save_files/"):
-            c += 1
-            print(f"{c}. {v}")
-        answer = input()
-        answer = os.listdir('./save_files/')[int(answer) - 1]
-        load_file = open(f"./save_files/{answer}")
-        lines = load_file.readlines()
-        load_file.close()
-        newlines = []
-        for v in lines:
-            newlines.append(v[:-1])
-        game_word = newlines[0]
-        correct_guesses = newlines[1].split(",")
-        incorrect_guesses = newlines[2].split(",")
-        all_guesses = newlines[3].split(",")
-        incorrects_remaining = int(newlines[4])
+            continue
+        else: 
+            print("Pick a file:")
+            c = 0
+            for v in os.listdir("./save_files/"):
+                c += 1
+                print(f"{c}. {v}")
+            answer = input()
+            answer = os.listdir('./save_files/')[int(answer) - 1]
+            load_file = open(f"./save_files/{answer}")
+            lines = load_file.readlines()
+            load_file.close()
+            newlines = []
+            for v in lines:
+                newlines.append(v[:-1])
+            game_word = newlines[0]
+            correct_guesses = newlines[1].split(",")
+            incorrect_guesses = newlines[2].split(",")
+            all_guesses = newlines[3].split(",")
+            incorrects_remaining = int(newlines[4])
         while True:
             os.system("cls")
             print(f"Incorrect guesses: {incorrect_guesses}")
@@ -170,7 +182,7 @@ while True:
                 incorrect_guesses.append(guess)           
                 all_guesses.append(guess)
                 incorrects_remaining -= 1       
-                print(f"game over - the word was {game_word}. Press 'Enter' to go back to the main menu.")
+                print(f"game over - the word was '{game_word.upper()}'. Press 'Enter' to go back to the main menu.")
                 input()
                 break
     elif answer == "3":
